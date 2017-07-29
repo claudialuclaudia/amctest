@@ -13,9 +13,10 @@ var isAuthenticated = function (req, res, next) {
 }
 
 var isAdmin = function (req, res, next) {
-	if (req.user.username === 'c')
+	if (req.user.username != 'c')
+		res.redirect('/notadmin');
+	else
 		return next();
-	res.redirect('/notadmin');
 }
 
 module.exports = function(passport){
@@ -28,7 +29,7 @@ module.exports = function(passport){
 
 	/* Handle Login POST */
 	router.post('/login', passport.authenticate('login', {
-		successRedirect: '/home',
+		successRedirect: '/test',
 		failureRedirect: '/',
 		failureFlash : true  
 	}));
@@ -40,14 +41,14 @@ module.exports = function(passport){
 
 	/* Handle Registration POST */
 	router.post('/signup', passport.authenticate('signup', {
-		successRedirect: '/home',
+		successRedirect: '/test',
 		failureRedirect: '/signup',
 		failureFlash : true  
 	}));
 
-	/* GET Home Page */
-	router.get('/home', isAuthenticated, function(req, res){
-		res.render('home', { user: req.user });
+	/* GET Test Page */
+	router.get('/test', isAuthenticated, function(req, res){
+		res.render('test', { user: req.user });
 	});
 
 	/* Handle Logout */
@@ -56,19 +57,15 @@ module.exports = function(passport){
 		res.redirect('/');
 	});
 
-	// router.get('/admin', isAuthenticated, isAdmin, function(req, res){
-	// 	res.render('admin', { user: req.user }, users);
-	// });
-
-	router.get('/admin', isAuthenticated, function (req, res) {
-    User.find({}).exec(function(err, users) {   
-        if (err) throw err;
-        res.render('admin.ejs', { "users": users });
+	router.get('/admin', isAuthenticated, isAdmin, function (req, res) {
+	    User.find({}).exec(function(err, users) {   
+        // if (err) throw err;
+	        res.render('admin.ejs', { "users": users });
 	    })
 	});
 
 	router.get('/notadmin', isAuthenticated, function(req, res){
-		res.render('notadmin', { user: req.user });
+		res.render('notadmin');
 	});
 
 	return router;
