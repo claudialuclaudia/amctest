@@ -1,0 +1,17 @@
+<h1>Welcome #{user.firstName} #{user.lastName} (#{user.username}, #{user.email})</h1>
+
+<body>
+<ul id = "rules">
+<li>This is a 25-question, multiple choice test. Each question is followed by answers marked A, B, C, D and E. Only one of these is correct.</li> 
+<li> SCORING: You will receive 6 points for each correct answer, 1.5 points for each problem left unanswered, and 0 points for each incorrect answer. </li>
+<li>No aids are permitted other than scratch paper, graph paper, ruler, compass, protractor, and erasers. No calculators are allowed. No problems on the test will require the use of a calculator.</li>
+<li>Figures are not necessarily drawn to scale.</li>
+<li> You will have 75 MINUTES to complete the test. Your remaining time is on the upper left hand of this page.</li>
+<li> When you finish the exam, click the submit button on the bottom of this page.</li>
+</ul>
+</body>
+
+<p>When you are finished, your test score will be sent to #{user.email}</p>
+
+a(href='/admin', class='text-center new-account') Admin Page<br>
+a(href='/signout', class='text-center new-account') Sign Out

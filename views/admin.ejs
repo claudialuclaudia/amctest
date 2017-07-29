@@ -1,0 +1,18 @@
+<!--<% for(var i = 0; i<users.length; i++) { %>
+    <li><%= users[i] %><li>
+    <% } %>-->
+
+<h1>Welcome admin!</h1>
+
+<h1> List of registered users:</h1>
+<% users.forEach(function (user) { %>
+    <li>  
+            <div>username: <%= user.username %></div>
+            <div>email: <%= user.email %></div>
+            <div>first name: <%= user.firstName %></div>
+            <div>last name: <%= user.lastName %></div>
+    </li>                                   
+<% }) %>
+
+<a href="/home">Test Page </a><br>
+<a href="/login">Logout</a>
