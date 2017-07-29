@@ -11,8 +11,11 @@
             <div>email: <%= user.email %></div>
             <div>first name: <%= user.firstName %></div>
             <div>last name: <%= user.lastName %></div>
+            <div>id: <%= user._id %></div>
+            <!--<div><a href="/deleteuser/<%= user.id %>">delete this users</a></div>-->
+            <a href="/delete/<%= user._id %>"><button id = "del-btn" class="btn btn-danger">Delete this user</button></a>
     </li>                                   
 <% }) %>
 
-<a href="/home">Test Page </a><br>
+<a href="/test">Test Page </a><br>
 <a href="/signout">Logout</a>

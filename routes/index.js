@@ -68,5 +68,16 @@ module.exports = function(passport){
 		res.render('notadmin');
 	});
 
+	router.get('/delete/:id?', isAuthenticated, function(req,res){
+		var db = req.db;
+		var uid = req.params.id;
+		console.log("id is ", uid );
+		User.remove({ _id: uid}).exec(function(err, users) {
+			if (err) throw err;
+		})
+		res.render('deleteok');
+
+	});
+
 	return router;
 }
