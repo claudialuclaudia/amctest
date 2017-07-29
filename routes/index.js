@@ -13,7 +13,7 @@ var isAuthenticated = function (req, res, next) {
 }
 
 var isAdmin = function (req, res, next) {
-	if (req.user.username != 'c')
+	if (req.user.username != 'admin')
 		res.redirect('/notadmin');
 	else
 		return next();
@@ -59,7 +59,7 @@ module.exports = function(passport){
 
 	router.get('/admin', isAuthenticated, isAdmin, function (req, res) {
 	    User.find({}).exec(function(err, users) {   
-        // if (err) throw err;
+        if (err) throw err;
 	        res.render('admin.ejs', { "users": users });
 	    })
 	});

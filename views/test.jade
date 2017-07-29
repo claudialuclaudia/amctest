@@ -1,6 +1,27 @@
 <h1>Welcome #{user.firstName} #{user.lastName} (#{user.username}, #{user.email})</h1>
 
 <body>
+script.
+    var answers = ["A","C","B"], 
+        tot = answers.length;
+
+    function getCheckedValue( radioName ){
+        var radios = document.getElementsByName( radioName ); // Get radio group by-name
+        for(var y=0; y<radios.length; y++)
+        if(radios[y].checked) return radios[y].value; // return the checked value
+    }
+
+    function getScore(){
+    var score = 0;
+    for (var i=0; i<tot; i++)
+        if(getCheckedValue("question"+i)===answers[i]) score += 1; // increment only
+    return score;
+    }
+
+    function returnScore(){
+    alert("Your score is "+ getScore() +"/"+ tot);
+    }
+
 <ul id = "rules">
 <li>This is a 25-question, multiple choice test. Each question is followed by answers marked A, B, C, D and E. Only one of these is correct.</li> 
 <li> SCORING: You will receive 6 points for each correct answer, 1.5 points for each problem left unanswered, and 0 points for each incorrect answer. </li>
@@ -9,9 +30,36 @@
 <li> You will have 75 MINUTES to complete the test. Your remaining time is on the upper left hand of this page.</li>
 <li> When you finish the exam, click the submit button on the bottom of this page.</li>
 </ul>
-</body>
+
+<ul>
+<li>
+<h3>How many letters are there in "JS"?</h3>
+<input type="radio" name="question0" value="A">2<br>
+<input type="radio" name="question0" value="B">1<br>
+<input type="radio" name="question0" value="C">3<br>
+<input type="radio" name="question0" value="D">4<br>
+</li>
+<li>
+<h3>How many letters are there in "BMX"?</h3>
+<input type="radio" name="question1" value="A">2<br>
+<input type="radio" name="question1" value="B">1<br>
+<input type="radio" name="question1" value="C">3<br>
+<input type="radio" name="question1" value="D">4<br>
+</li>
+<li>
+<h3>How many letters are there in "A"?</h3>
+<input type="radio" name="question2" value="A">2<br>
+<input type="radio" name="question2" value="B">1<br>
+<input type="radio" name="question2" value="C">3<br>
+<input type="radio" name="question2" value="D">4<br>
+</li>
+</ul>
+
+<button onclick="returnScore()">View Results</button>
 
 <p>When you are finished, your test score will be sent to #{user.email}</p>
 
 a(href='/admin', class='text-center new-account') Admin Page<br>
 a(href='/signout', class='text-center new-account') Sign Out
+
+</body>
