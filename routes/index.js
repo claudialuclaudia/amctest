@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../models/user');
+var answers = require('../models/answers');
 
 var isAuthenticated = function (req, res, next) {
 	// if user is authenticated in the session, call the next() to call the next request handler 
@@ -59,7 +60,7 @@ module.exports = function(passport){
 
 	router.get('/admin', isAuthenticated, isAdmin, function (req, res) {
 	    User.find({}).exec(function(err, users) {   
-        if (err) throw err;
+        	if (err) throw err;
 	        res.render('admin.ejs', { "users": users });
 	    })
 	});
@@ -71,12 +72,29 @@ module.exports = function(passport){
 	router.get('/delete/:id?', isAuthenticated, function(req,res){
 		var db = req.db;
 		var uid = req.params.id;
-		console.log("id is ", uid );
+		// console.log("id is ", uid );
 		User.remove({ _id: uid}).exec(function(err, users) {
 			if (err) throw err;
 		})
 		res.render('deleteok');
+	});
 
+	router.get('/answers', isAuthenticated, function(req, res){
+		answers.find({}).exec(function(err, answers) {
+			if (err) throw err;
+			res.send({"answers": answers});
+		})
+	});
+
+	router.post('/answers', function(req, res) {
+		answers.register(new answers({ answers: req.body.answers }), function(err) {
+			if (err) {
+				console.log('Error in Saving user: '+err);  
+                throw err;  
+			}
+			console.log('post answers success');
+			return done(null);
+		});
 	});
 
 	return router;
