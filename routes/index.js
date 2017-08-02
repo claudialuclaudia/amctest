@@ -83,17 +83,23 @@ module.exports = function(passport){
 		answers.find({}).exec(function(err, answers) {
 			if (err) throw err;
 			res.send({"answers": answers});
+			console.log("answers is", answers);
 		})
 	});
 
 	router.post('/answers', function(req, res) {
-		answers.register(new answers({ answers: req.body.answers }), function(err) {
-			if (err) {
-				console.log('Error in Saving user: '+err);  
-                throw err;  
-			}
-			console.log('post answers success');
-			return done(null);
+		answers.remove({}).exec(function(err, users) {
+			if (err) throw err;
+		})
+		var newAnswers = new answers();
+		newAnswers.answers = req.param('answers');
+		newAnswers.save(function(err) {
+                            if (err){
+                                console.log('Error in posting answers: '+err);  
+                                throw err;  
+                            }
+                            console.log('post answers succesful');    
+                            // return done(null, newAnswers);			
 		});
 	});
 
