@@ -5,6 +5,10 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+var mongoose = require('mongoose');
+conn      = mongoose.createConnection('mongodb://heroku_r7mfmfz6:1i2jsafc0nm2d9uelq9urbju32@ds129023.mlab.com:29023/heroku_r7mfmfz6');
+conn2     = mongoose.createConnection('mongodb://heroku_772msnjn:ohrcgstaat56t7aemn24on76q6@ds129023.mlab.com:29023/heroku_772msnjn');
+
 var app = express();
 
 // view engine setup
