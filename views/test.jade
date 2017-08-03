@@ -1,9 +1,14 @@
 <h1>Welcome #{user.firstName} #{user.lastName} (#{user.username}, #{user.email})</h1>
+<p>answers is #{answers}</p>
+//- var answers = !{JSON.stringify(answers)};
 
 <body>
 script.
-    var answers = require('/answers'), 
+    var answers = !{answers};
+    //- var answers = document.getElementsByName( answers.answers );
+    //- var answers = <%- JSON.stringify(answers) %>;
         tot = answers.length;
+        //- console.log("tot is", tot);
 
     function getCheckedValue( radioName ){
         var radios = document.getElementsByName( radioName ); // Get radio group by-name

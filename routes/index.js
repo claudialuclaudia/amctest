@@ -49,7 +49,11 @@ module.exports = function(passport){
 
 	/* GET Test Page */
 	router.get('/test', isAuthenticated, function(req, res){
-		res.render('test', { user: req.user });
+		answers.find({}).exec(function(err, answers) {
+			if (err) throw err;
+			res.render('test', { user: req.user, "answers": answers[0].answers });
+			// console.log("answers is", answers[0]);
+		})
 	});
 
 	/* Handle Logout */
@@ -82,7 +86,8 @@ module.exports = function(passport){
 	router.get('/answers', isAuthenticated, function(req, res){
 		answers.find({}).exec(function(err, answers) {
 			if (err) throw err;
-			res.send({"answers": answers});
+			// res.send({"answers": answers});
+			res.render('answers.ejs', { "answers": answers });
 			console.log("answers is", answers);
 		})
 	});
