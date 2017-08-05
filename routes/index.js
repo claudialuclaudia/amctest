@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../models/user');
-var answers = require('../models/answers');
+var answer = require('../models/answer');
 
 var isAuthenticated = function (req, res, next) {
 	// if user is authenticated in the session, call the next() to call the next request handler 
@@ -47,13 +47,17 @@ module.exports = function(passport){
 		failureFlash : true  
 	}));
 
-	/* GET Test Page */
-	router.get('/test', isAuthenticated, function(req, res){
-		answers.find({}).exec(function(err, answers) {
-			if (err) throw err;
-			res.render('test', { user: req.user, "answers": answers[0].answers });
-			// console.log("answers is", answers[0]);
-		})
+	// /* GET Test Page */
+	// router.get('/test', isAuthenticated, function(req, res){
+	// 	answer.find({}).exec(function(err, answer) {
+	// 		if (err) throw err;
+	// 		res.render('test', { user: req.user, "answer": answer[0].answer });
+	// 		// console.log("answer is", answer[0]);
+	// 	})
+	// });
+
+	router.get('/test', function(req, res){
+		res.render('test', { user: req.user });
 	});
 
 	/* Handle Logout */
@@ -84,28 +88,32 @@ module.exports = function(passport){
 	});
 
 	router.get('/answers', isAuthenticated, function(req, res){
-		answers.find({}).exec(function(err, answers) {
+		answer.find({}).exec(function(err, answer) {
 			if (err) throw err;
-			// res.send({"answers": answers});
-			res.render('answers.ejs', { "answers": answers });
-			console.log("answers is", answers);
+			// res.send({"answer": answer});
+			res.render('answers.ejs', { "answer": answer });
+			console.log("answer is", answer);
 		})
 	});
 
-	router.post('/answers', function(req, res) {
-		answers.remove({}).exec(function(err, users) {
-			if (err) throw err;
-		})
-		var newAnswers = new answers();
-		newAnswers.answers = req.param('answers');
-		newAnswers.save(function(err) {
+	router.post('/answer', function(req, res) {
+		var newAnswer = new answer();
+		newAnswer.questionNum = req.param('questionNum');
+		newAnswer.answer = req.param('answer');
+		newAnswer.save(function(err) {
                             if (err){
-                                console.log('Error in posting answers: '+err);  
+                                console.log('Error in posting answer: '+err);  
                                 throw err;  
                             }
-                            console.log('post answers succesful');    
-                            // return done(null, newAnswers);			
+                            console.log('post answer succesful');    
+                            // return done(null, newAnswer);			
 		});
+	});
+
+	router.post('/removeanswers', function(req, res) {
+		answer.remove({}).exec(function(err, users) {
+			if (err) throw err;
+		})
 	});
 
 	return router;
