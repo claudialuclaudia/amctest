@@ -1,70 +1,26 @@
-<h1>Welcome #{user.firstName} #{user.lastName} (#{user.username}, #{user.email})</h1>
+h1 Welcome #{user.firstName} #{user.lastName} (#{user.username}, #{user.email})
 //- <p>answers is #{answers}</p>
 //- var answers = !{JSON.stringify(answers)};
 
-<body>
-script.
-    //- var answers = !{answers};
-    //- var answers = document.getElementsByName( answers.answers );
-    //- var answers = <%- JSON.stringify(answers) %>;
-        tot = answers.length;
-        //- console.log("tot is", tot);
+ul
+    li This is a 25-question, multiple choice test. Each question is followed by answers marked A, B, C, D and E. Only one of these is correct. 
+    li SCORING: You will receive 6 points for each correct answer, 1.5 points for each problem left unanswered, and 0 points for each incorrect answer.
+    li No aids are permitted other than scratch paper, graph paper, ruler, compass, protractor, and erasers. No calculators are allowed. No problems on the test will require the use of a calculator.
+    li Figures are not necessarily drawn to scale.
+    li You will have 75 MINUTES to complete the test. Your remaining time is on the upper left hand of this page.
+    li When you finish the exam, click the submit button on the bottom of this page.
 
-    function getCheckedValue( radioName ){
-        var radios = document.getElementsByName( radioName ); // Get radio group by-name
-        for(var y=0; y<radios.length; y++)
-        if(radios[y].checked) return radios[y].value; // return the checked value
-    }
+h3 Q1: A)1 B)2 C)3
 
-    function getScore(){
-    var score = 0;
-    for (var i=0; i<tot; i++)
-        if(getCheckedValue("question"+i)===answers[i]) score += 1; // increment only
-    return score;
-    }
+h3.text-center.login-title Write down all your answers
+    form(class='form-test', action='/test', method='POST')
+        input(type='ans', name='ans1' class='form-control', placeholder='ans1')
+        button(class='btn btn-lg btn-primary btn-block', type='submit') Submit
+        span.clearfix
+a(href='/admin', class='text-center admin-page') Admin Page<br>
+a(href='/signout', class='text-center index-page') Sign Out<br>
 
-    function returnScore(){
-    alert("Your score is "+ getScore() +"/"+ tot);
-    }
-
-<ul id = "rules">
-<li>This is a 25-question, multiple choice test. Each question is followed by answers marked A, B, C, D and E. Only one of these is correct.</li> 
-<li> SCORING: You will receive 6 points for each correct answer, 1.5 points for each problem left unanswered, and 0 points for each incorrect answer. </li>
-<li>No aids are permitted other than scratch paper, graph paper, ruler, compass, protractor, and erasers. No calculators are allowed. No problems on the test will require the use of a calculator.</li>
-<li>Figures are not necessarily drawn to scale.</li>
-<li> You will have 75 MINUTES to complete the test. Your remaining time is on the upper left hand of this page.</li>
-<li> When you finish the exam, click the submit button on the bottom of this page.</li>
-</ul>
-
-<ul>
-<li>
-<h3>How many letters are there in "JS"?</h3>
-<input type="radio" name="question0" value="A">2<br>
-<input type="radio" name="question0" value="B">1<br>
-<input type="radio" name="question0" value="C">3<br>
-<input type="radio" name="question0" value="D">4<br>
-</li>
-<li>
-<h3>How many letters are there in "BMX"?</h3>
-<input type="radio" name="question1" value="A">2<br>
-<input type="radio" name="question1" value="B">1<br>
-<input type="radio" name="question1" value="C">3<br>
-<input type="radio" name="question1" value="D">4<br>
-</li>
-<li>
-<h3>How many letters are there in "A"?</h3>
-<input type="radio" name="question2" value="A">2<br>
-<input type="radio" name="question2" value="B">1<br>
-<input type="radio" name="question2" value="C">3<br>
-<input type="radio" name="question2" value="D">4<br>
-</li>
-</ul>
-
-<button onclick="returnScore()">View Results</button>
-
-<p>When you are finished, your test score will be sent to #{user.email}</p>
-
-a(href='/admin', class='text-center new-account') Admin Page<br>
-a(href='/signout', class='text-center new-account') Sign Out
-
-</body>
+//- <button onclick="returnScore()">View Results</button>
+//- #message
+//-     if message
+//-         h1.text-center.error-message #{message}

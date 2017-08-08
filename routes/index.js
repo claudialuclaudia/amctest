@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../models/user');
-var answer = require('../models/answer');
+var Answer = require('../models/answer');
 var bCrypt = require('bcrypt-nodejs');
 
 var isAuthenticated = function (req, res, next) {
@@ -48,18 +48,16 @@ module.exports = function(passport){
 		failureFlash : true  
 	}));
 
-	// /* GET Test Page */
-	// router.get('/test', isAuthenticated, function(req, res){
-	// 	answer.find({}).exec(function(err, answer) {
-	// 		if (err) throw err;
-	// 		res.render('test', { user: req.user, "answer": answer[0].answer });
-	// 		// console.log("answer is", answer[0]);
-	// 	})
-	// });
+    router.get('/test', function(req, res){
+        res.render('test', { user: req.user });
+    });
 
-	router.get('/test', function(req, res){
-		res.render('test', { user: req.user });
-	});
+    router.post('/test', passport.authenticate('test', {
+        successRedirect: '/testdone',
+        failureRedirect: '/testdone',
+        failureFlash : true  
+    }));    
+
 
 	/* Handle Logout */
 	router.get('/signout', function(req, res) {
@@ -89,7 +87,7 @@ module.exports = function(passport){
 	});
 
 	router.get('/answers', isAuthenticated, function(req, res){
-		answer.find({}).exec(function(err, answer) {
+		Answer.find({}).exec(function(err, answer) {
 			if (err) throw err;
 			// res.send({"answer": answer});
 			res.render('answers.ejs', { "answer": answer });
@@ -100,7 +98,7 @@ module.exports = function(passport){
 	router.post('/answer', function(req, res) {
 		var newAnswer = new answer();
 		newAnswer.questionNum = req.param('questionNum');
-		newAnswer.answer = createHash(answer);
+		newAnswer.ans = createHash(ans);
 		newAnswer.save(function(err) {
                             if (err){
                                 console.log('Error in posting answer: '+err);  
@@ -116,10 +114,15 @@ module.exports = function(passport){
     }
 
 	router.post('/removeanswers', function(req, res) {
-		answer.remove({}).exec(function(err, users) {
+		Answer.remove({}).exec(function(err, users) {
 			if (err) throw err;
 		})
 	});
+	
+	router.get('/testdone', function(req, res){
+        res.render('testdone', { user: req.user });
+    });
+
 
 	return router;
 }
