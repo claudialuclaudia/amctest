@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var User = require('../models/user');
 var answer = require('../models/answer');
+var bCrypt = require('bcrypt-nodejs');
 
 var isAuthenticated = function (req, res, next) {
 	// if user is authenticated in the session, call the next() to call the next request handler 
@@ -99,7 +100,7 @@ module.exports = function(passport){
 	router.post('/answer', function(req, res) {
 		var newAnswer = new answer();
 		newAnswer.questionNum = req.param('questionNum');
-		newAnswer.answer = req.param('answer');
+		newAnswer.answer = createHash(answer);
 		newAnswer.save(function(err) {
                             if (err){
                                 console.log('Error in posting answer: '+err);  
@@ -109,6 +110,10 @@ module.exports = function(passport){
                             // return done(null, newAnswer);			
 		});
 	});
+
+	var createHash = function(password){
+        return bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
+    }
 
 	router.post('/removeanswers', function(req, res) {
 		answer.remove({}).exec(function(err, users) {
