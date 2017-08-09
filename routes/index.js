@@ -96,9 +96,9 @@ module.exports = function(passport){
 	});
 
 	router.post('/answer', function(req, res) {
-		var newAnswer = new answer();
+		var newAnswer = new Answer();
 		newAnswer.questionNum = req.param('questionNum');
-		newAnswer.ans = createHash(ans);
+		newAnswer.ans = createHash(req.param('ans'));
 		newAnswer.save(function(err) {
                             if (err){
                                 console.log('Error in posting answer: '+err);  
