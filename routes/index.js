@@ -3,6 +3,8 @@ var router = express.Router();
 var User = require('../models/user');
 var Answer = require('../models/answer');
 var bCrypt = require('bcrypt-nodejs');
+var result = 0;
+var qN = 1;
 
 var isAuthenticated = function (req, res, next) {
 	// if user is authenticated in the session, call the next() to call the next request handler 
@@ -52,11 +54,37 @@ module.exports = function(passport){
         res.render('test', { user: req.user });
     });
 
-    router.post('/test', passport.authenticate('test', {
-        successRedirect: '/testdone',
-        failureRedirect: '/testdone',
-        failureFlash : true  
-    }));    
+	router.post('/test', function(req, res) {
+            Answer.findOne({ 'questionNum': qN }, 
+                function(err, answer) {
+                    var a = req.param('ans1');
+                    if (err)
+                        return done(err);
+                    else if (!answer)
+                        console.log('no answer to question ', i);
+                    else if (a === '') {
+                        result +=1.5;
+                        console.log('result is ', result);
+                    }
+                    else if (!isRightAns(answer, a)) {
+                        console.log('ans to ', qN, ' is wrong');
+                        result +=0;
+                        console.log('result is ', result);
+                    }
+                    else if (isRightAns(answer, a)) {
+                        console.log('ans to ', qN, ' is right');
+                        result += 6;
+                        console.log('result is ', result);         
+                    }
+                    // return done(null, user);
+                }
+            );
+			res.render('testdone');
+	});
+
+	var isRightAns = function(answer, ans){
+        return bCrypt.compareSync(ans, answer.ans);
+    }
 
 
 	/* Handle Logout */
