@@ -22,16 +22,6 @@ var isAdmin = function (req, res, next) {
 		return next();
 }
 
-// var isRightAns = function (questionNum, userA) {
-// 	Answer.findOne({ 'questionNum': questionNum }, function(err, answer){
-// 		// if (err)
-//         //     return done(err);
-// 		console.log("answer to ", questionNum, " is ", answer.ans);
-// 		return bCrypt.compareSync(userA, answer.ans);
-// 	});
-// }
-
-
 module.exports = function(passport){
 
 	/* GET login page. */
@@ -63,34 +53,6 @@ module.exports = function(passport){
         res.render('test', { user: req.user });
     });
 
-	// router.post('/test', function(req, res) {
-    //         Answer.findOne({ 'questionNum': qN }, 
-    //             function(err, answer) {
-    //                 var a = req.param('ans1');
-    //                 if (err)
-    //                     return done(err);
-    //                 else if (!answer)
-    //                     console.log('no answer to question ', i);
-    //                 else if (a === '') {
-    //                     result +=1.5;
-    //                     console.log('result is ', result);
-    //                 }
-    //                 else if (!isRightAns(answer, a)) {
-    //                     console.log('ans to ', qN, ' is wrong');
-    //                     result +=0;
-    //                     console.log('result is ', result);
-    //                 }
-    //                 else if (isRightAns(answer, a)) {
-    //                     console.log('ans to ', qN, ' is right');
-    //                     result += 6;
-    //                     console.log('result is ', result);         
-    //                 }
-    //                 // return done(null, user);
-    //             }
-    //         );
-	// 		res.render('testdone');
-	// });
-
 	router.post('/test', function(req, res) {
         Answer.find({}).exec(function(err, answer){
             console.log("answer is", answer);
@@ -115,8 +77,8 @@ module.exports = function(passport){
                         console.log('result is ', result);
                 }
             }
+		res.render('testdone', {result: result});
         })
-		res.render('testdone');
     });
 
 	/* Handle Logout */
@@ -179,9 +141,9 @@ module.exports = function(passport){
 		})
 	});
 	
-	router.get('/testdone', function(req, res){
-        res.render('testdone', { user: req.user });
-    });
+	// router.get('/testdone', function(req, res){
+    //     res.render('testdone');
+    // });
 
 
 	return router;
