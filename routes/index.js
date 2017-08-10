@@ -77,7 +77,7 @@ module.exports = function(passport){
                         console.log('result is ', result);
                 }
             }
-		res.render('testdone', {result: result});
+		res.render('testdone', {result: result, user: req.user});
         })
     });
 
