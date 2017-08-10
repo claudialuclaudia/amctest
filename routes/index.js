@@ -3,7 +3,6 @@ var router = express.Router();
 var User = require('../models/user');
 var Answer = require('../models/answer');
 var bCrypt = require('bcrypt-nodejs');
-var result = 0;
 
 var isAuthenticated = function (req, res, next) {
 	// if user is authenticated in the session, call the next() to call the next request handler 
@@ -55,6 +54,7 @@ module.exports = function(passport){
 
 	router.post('/test', function(req, res) {
         Answer.find({}).exec(function(err, answer){
+			var result = 0;
             console.log("answer is", answer);
             for (i=0; i<3; i++){
                 var qN = i + 1;
