@@ -4,7 +4,6 @@ var User = require('../models/user');
 var Answer = require('../models/answer');
 var bCrypt = require('bcrypt-nodejs');
 var result = 0;
-var qN = 1;
 
 var isAuthenticated = function (req, res, next) {
 	// if user is authenticated in the session, call the next() to call the next request handler 
@@ -22,6 +21,16 @@ var isAdmin = function (req, res, next) {
 	else
 		return next();
 }
+
+// var isRightAns = function (questionNum, userA) {
+// 	Answer.findOne({ 'questionNum': questionNum }, function(err, answer){
+// 		// if (err)
+//         //     return done(err);
+// 		console.log("answer to ", questionNum, " is ", answer.ans);
+// 		return bCrypt.compareSync(userA, answer.ans);
+// 	});
+// }
+
 
 module.exports = function(passport){
 
@@ -54,38 +63,61 @@ module.exports = function(passport){
         res.render('test', { user: req.user });
     });
 
+	// router.post('/test', function(req, res) {
+    //         Answer.findOne({ 'questionNum': qN }, 
+    //             function(err, answer) {
+    //                 var a = req.param('ans1');
+    //                 if (err)
+    //                     return done(err);
+    //                 else if (!answer)
+    //                     console.log('no answer to question ', i);
+    //                 else if (a === '') {
+    //                     result +=1.5;
+    //                     console.log('result is ', result);
+    //                 }
+    //                 else if (!isRightAns(answer, a)) {
+    //                     console.log('ans to ', qN, ' is wrong');
+    //                     result +=0;
+    //                     console.log('result is ', result);
+    //                 }
+    //                 else if (isRightAns(answer, a)) {
+    //                     console.log('ans to ', qN, ' is right');
+    //                     result += 6;
+    //                     console.log('result is ', result);         
+    //                 }
+    //                 // return done(null, user);
+    //             }
+    //         );
+	// 		res.render('testdone');
+	// });
+
 	router.post('/test', function(req, res) {
-            Answer.findOne({ 'questionNum': qN }, 
-                function(err, answer) {
-                    var a = req.param('ans1');
-                    if (err)
-                        return done(err);
-                    else if (!answer)
-                        console.log('no answer to question ', i);
-                    else if (a === '') {
+        Answer.find({}).exec(function(err, answer){
+            console.log("answer is", answer);
+            for (i=0; i<3; i++){
+                var qN = i + 1;
+                var string = 'ans' + qN; //string = 'ans1'
+                console.log('string is', string);
+                var a = req.param(string); //a is user provided answer
+                console.log('a is', a);
+                if (a === '') {
                         result +=1.5;
                         console.log('result is ', result);
-                    }
-                    else if (!isRightAns(answer, a)) {
+                }
+                else if (bCrypt.compareSync(a, answer[i].ans)){
+                        console.log('ans to ', qN, ' is right');
+                        result += 6;
+                        console.log('result is ', result);   
+                }
+                else {
                         console.log('ans to ', qN, ' is wrong');
                         result +=0;
                         console.log('result is ', result);
-                    }
-                    else if (isRightAns(answer, a)) {
-                        console.log('ans to ', qN, ' is right');
-                        result += 6;
-                        console.log('result is ', result);         
-                    }
-                    // return done(null, user);
                 }
-            );
-			res.render('testdone');
-	});
-
-	var isRightAns = function(answer, ans){
-        return bCrypt.compareSync(ans, answer.ans);
-    }
-
+            }
+        })
+		res.render('testdone');
+    });
 
 	/* Handle Logout */
 	router.get('/signout', function(req, res) {
