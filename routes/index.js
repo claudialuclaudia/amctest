@@ -60,7 +60,7 @@ module.exports = function(passport){
                 var qN = i + 1;
                 var string = 'ans' + qN; //string = 'ans1'
                 console.log('string is', string);
-                var a = req.param(string); //a is user provided answer
+                var a = req.param(string).toUpperCase(); //a is user provided answer
                 console.log('a is', a);
                 if (a === '') {
                         result +=1.5;
